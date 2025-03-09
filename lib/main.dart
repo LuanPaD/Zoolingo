@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  BuildContext? get context => null;
+
   void _onLocationTap() {
     print('Localização clicada');
   }
@@ -27,12 +30,54 @@ class HomeScreen extends StatelessWidget {
     print('Perfil do usuário clicado');
   }
 
-  void _onViewMap() {
+  void _onViewMap(BuildContext context) {
     print('Ver mapa clicado');
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+              //Todo: Trocar por img local, colocar mapa do figma
+              'https://live.staticflickr.com/7192/6865549696_ab8b0f6e4b_h.jpg',
+                width: 400,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+              /*Todo: Imagem local
+              Image.asset(
+                'assets/images/map_image.jpg', // Caminho da imagem local dentro da pasta assets
+                width: 400,
+                height: 300,
+                fit: BoxFit.cover,
+              )
+              */
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Fechar'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  void _onDiscover() {
+
+  void _onDiscover(BuildContext context) {
     print('Descubra clicado');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => GameScreen()),
+    );
   }
 
   @override
@@ -67,32 +112,43 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            const Text('Zoolingo', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Align(
+              alignment: Alignment.centerLeft, // Alinha à esquerda
+              child: const Text(
+                'Zoolingo',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+            ),
             const SizedBox(height: 20),
             Expanded(
               child: Center(
-                child: Image.network(
-                  //Todo: Trocar por img local
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGiuqlyBPryppG-TtxwabwcH5sUlIkCakOw&s',
-                  width: 300,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    //Todo: Trocar por img local, colocar imagem do figma
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGiuqlyBPryppG-TtxwabwcH5sUlIkCakOw&s',
+                    width: 350,
+                    height: 350,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
             ElevatedButton(
-              onPressed: _onViewMap,
+              onPressed:() => _onViewMap(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               child: const Text('Ver mapa', style: TextStyle(color: Colors.white, fontSize: 16)),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: _onDiscover,
+              onPressed: () => _onDiscover(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
-                padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               child: const Text('Descubra', style: TextStyle(color: Colors.white, fontSize: 16)),

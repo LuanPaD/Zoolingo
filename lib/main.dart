@@ -154,15 +154,32 @@ class HomeScreen extends StatelessWidget {
               child: const Text('Descubra', style: TextStyle(color: Colors.white, fontSize: 16)),
             ),
             const SizedBox(height: 40),
-            BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home, color: Colors.green), label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.pets), label: ''),
-                BottomNavigationBarItem(icon: Icon(Icons.info), label: ''),
-              ],
-            )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.green[400],
+        unselectedItemColor: Colors.grey[600],
+        currentIndex: 0,
+        onTap: (index) {
+          if (index == 0) {
+            print('Início clicado');
+          } else if (index == 1) {
+            print('Descubra clicado');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GameScreen()),
+            );
+          } else if (index == 2) {
+            print('Perfil clicado');
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'Descubra'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        ],
       ),
     );
   }

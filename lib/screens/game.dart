@@ -1,24 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoolingo/main.dart';
 import 'package:zoolingo/screens/Animal.dart';
 import 'package:zoolingo/models/animal_info.dart';
 
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AnimalPathScreen(username: "User Teste"),
-    );
-  }
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class AnimalPathScreen extends StatelessWidget {
-  final String username;
+class _GameScreenState extends State<GameScreen> {
+  List<int> unlockedAnimals = [0]; // Inicializa com o primeiro animal desbloqueado
 
-  AnimalPathScreen({required this.username});
+  @override
+  void initState() {
+    super.initState();
+    _loadProgress();
+  }
+
+  Future<void> _loadProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedList = prefs.getStringList('unlockedAnimals');
+    setState(() {
+      unlockedAnimals = savedList?.map(int.parse).toList() ?? [0];
+    });
+  }
+
+  Future<void> _saveProgress() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(
+      'unlockedAnimals',
+      unlockedAnimals.map((e) => e.toString()).toList(),
+    );
+  }
+
+  void handleAnimalCompleted(int index) {
+    if (!unlockedAnimals.contains(index + 1) && index + 1 < animals.length) {
+      setState(() {
+        unlockedAnimals.add(index + 1);
+      });
+      _saveProgress();
+      print("Animal desbloqueado: ${index + 1}");
+    }
+  }
 
   final List<Map<String, dynamic>> animals = [
     {'name': 'Lhama', 'category': 'Mamíferos'},
@@ -27,24 +53,48 @@ class AnimalPathScreen extends StatelessWidget {
     {'name': 'Macaco', 'category': 'Mamíferos'},
     {'name': 'Píton', 'category': 'Répteis'},
     {'name': 'Tartaruga', 'category': 'Répteis'},
-    {'name': 'Jacaré do Papo Amarelo', 'category': 'Répteis'},
+    {'name': 'Jacaré de Papo Amarelo', 'category': 'Répteis'},
     {'name': 'Arara Azul', 'category': 'Aves'},
-    {'name': 'Papagaio do Peito Roxo', 'category': 'Aves'},
+    {'name': 'Papagaio de Peito Roxo', 'category': 'Aves'},
     {'name': 'Avestruz', 'category': 'Aves'},
   ];
 
-  int getUnlockedCount() => 1; // Lógica futura para progresso real
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AnimalPathScreen(
+        username: "User Teste",
+        unlockedAnimals: unlockedAnimals,
+        animals: animals,
+        onAnimalCompleted: handleAnimalCompleted,
+      ),
+    );
+  }
+}
+
+class AnimalPathScreen extends StatelessWidget {
+  final String username;
+  final List<int> unlockedAnimals;
+  final Function(int) onAnimalCompleted;
+  final List<Map<String, dynamic>> animals;
+
+  const AnimalPathScreen({
+    required this.username,
+    required this.unlockedAnimals,
+    required this.onAnimalCompleted,
+    required this.animals,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final progress = getUnlockedCount() / animals.length;
+    final progress = unlockedAnimals.length / animals.length;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
         child: Column(
           children: [
-            // Top Bar
             Container(
               padding: const EdgeInsets.all(16),
               color: Colors.white,
@@ -78,7 +128,6 @@ class AnimalPathScreen extends StatelessWidget {
               ),
             ),
 
-            // Caminho de animais
             Expanded(
               child: SingleChildScrollView(
                 child: Center(
@@ -86,7 +135,8 @@ class AnimalPathScreen extends StatelessWidget {
                     children: List.generate(animals.length, (index) {
                       final animal = animals[index];
                       final isLeft = index % 2 == 0;
-                      final unlocked = index == 0;
+                      final unlocked = unlockedAnimals.contains(index);
+                      final completed = unlockedAnimals.contains(index + 1);
 
                       final animalEncontrado = animais.firstWhere((animalClass) => animalClass.nome == animal['name']);
 
@@ -98,14 +148,24 @@ class AnimalPathScreen extends StatelessWidget {
                             alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
                             child: GestureDetector(
                               onTap: unlocked
-                                  ? () {
+                                  ? () async {
                                 print('Animal desbloqueado: ${animal['name']}');
-                                Navigator.push(
+
+                                final bool resultado = await Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => AnimalScreen(
-                                    animal : animalEncontrado,
-                                  )),
+                                  MaterialPageRoute(
+                                    builder: (context) => AnimalScreen(
+                                      animal: animalEncontrado,
+                                    ),
+                                  ),
                                 );
+
+                                if (resultado) {
+                                  onAnimalCompleted(index);
+                                  print('Você completou todas as atividades para o ${animal['name']}!');
+                                } else {
+                                  print('Ainda não completou todas as atividades para o ${animal['name']}');
+                                }
                               }
                                   : () {
                                 print('Animal bloqueado: ${animal['name']}');
@@ -113,13 +173,13 @@ class AnimalPathScreen extends StatelessWidget {
                               child: AnimalNode(
                                 name: animal['name'],
                                 unlocked: unlocked,
+                                completed: completed,
                                 category: animal['category'],
                               ),
                             ),
                           ),
                         ),
                       );
-
                     }),
                   ),
                 ),
@@ -128,20 +188,16 @@ class AnimalPathScreen extends StatelessWidget {
           ],
         ),
       ),
-
-      // Bottom Navigation
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Colors.green[400],
         unselectedItemColor: Colors.grey[600],
         currentIndex: 1,
         onTap: (index) {
-          if(index == 1){
+          if (index == 1) {
             print("Pagina de Descoberta clicada");
-            // Navegar para a tela de descoberta
-          } else if(index == 2){
+          } else if (index == 2) {
             print("Pagina de Perfil clicada");
-            // Navegar para a tela de perfil
           } else {
             Navigator.push(
               context,
@@ -149,7 +205,6 @@ class AnimalPathScreen extends StatelessWidget {
                 builder: (context) => const HomeScreen(),
               ),
             );
-            // Navegar para a tela inicial
           }
         },
         items: const [
@@ -165,11 +220,13 @@ class AnimalPathScreen extends StatelessWidget {
 class AnimalNode extends StatelessWidget {
   final String name;
   final bool unlocked;
+  final bool completed;
   final String category;
 
   const AnimalNode({
     required this.name,
     required this.unlocked,
+    required this.completed,
     required this.category,
   });
 
@@ -188,7 +245,9 @@ class AnimalNode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final circleColor = unlocked ? getColorByCategory(category) : Colors.grey[300];
+    final circleColor = completed
+        ? Colors.green[400]!
+        : (unlocked ? getColorByCategory(category) : Colors.grey[300]!);
     final iconColor = unlocked ? Colors.white : Colors.grey[500];
 
     return Column(
@@ -221,4 +280,3 @@ class AnimalNode extends StatelessWidget {
     );
   }
 }
-

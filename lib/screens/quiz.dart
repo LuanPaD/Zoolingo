@@ -49,7 +49,24 @@ class _QuizScreenState extends State<QuizScreen> {
         });
 
         if (_vidasRestantes <= 0) {
-          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Game Over'),
+                content: const Text('Você perdeu todas as vidas!'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Voltar'),
+                  ),
+                ],
+              );
+            },
+          );
         }
       });
     }

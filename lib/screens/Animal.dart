@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:zoolingo/models/animal_info.dart';
 import 'package:zoolingo/screens/quiz.dart';
 
@@ -18,7 +19,11 @@ class _AnimalScreenState extends State<AnimalScreen> {
   bool _quizConcluido = false;
   bool get _quizDisponivel => _clicados.every((clicado) => clicado);
 
-
+  @override
+  void initState() {
+    super.initState();
+    _carregarProgresso();
+  }
 
   void _abrirBotao(int index) {
     setState(() {
@@ -26,6 +31,7 @@ class _AnimalScreenState extends State<AnimalScreen> {
         _clicados[index] = true;
         _progresso += 0.2;
         if (_progresso > 1.0) _progresso = 1.0;
+        _salvarProgresso();
       }
       _botaoAberto = index;
     });
@@ -37,26 +43,37 @@ class _AnimalScreenState extends State<AnimalScreen> {
     });
   }
 
+  void _salvarProgresso() {
+    final box = Hive.box('progresso_animais');
+    box.put(widget.animal.nome, {
+      'clicados': _clicados,
+      'quizConcluido': _quizConcluido,
+    });
+  }
+
+  void _carregarProgresso() {
+    final box = Hive.box('progresso_animais');
+    final dados = box.get(widget.animal.nome);
+
+    if (dados != null) {
+      setState(() {
+        _clicados = List<bool>.from(dados['clicados']);
+        _quizConcluido = dados['quizConcluido'];
+        _progresso = (_clicados.where((c) => c).length * 0.2);
+        if (_quizConcluido) _progresso += 0.2;
+        if (_progresso > 1.0) _progresso = 1.0;
+      });
+    }
+  }
+
   Widget _buildConteudoBotao() {
     switch (_botaoAberto) {
       case 0:
-        return Column(
-          children: [
-            const Text(
-              'Alimentação',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(widget.animal.alimentacao, textAlign: TextAlign.center),
-          ],
-        );
+        return _buildTexto('Alimentação', widget.animal.alimentacao);
       case 1:
         return Column(
           children: [
-            const Text(
-              'Habitat',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            const Text('Habitat', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Image.asset(widget.animal.habitatImage, height: 300),
             const SizedBox(height: 10),
@@ -64,30 +81,22 @@ class _AnimalScreenState extends State<AnimalScreen> {
           ],
         );
       case 2:
-        return Column(
-          children: [
-            const Text(
-              'Comportamento',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(widget.animal.comportamento, textAlign: TextAlign.center),
-          ],
-        );
+        return _buildTexto('Comportamento', widget.animal.comportamento);
       case 3:
-        return Column(
-          children: [
-            const Text(
-              'Curiosidades',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(widget.animal.curiosidades, textAlign: TextAlign.center),
-          ],
-        );
+        return _buildTexto('Curiosidades', widget.animal.curiosidades);
       default:
         return const SizedBox.shrink();
     }
+  }
+
+  Widget _buildTexto(String titulo, String conteudo) {
+    return Column(
+      children: [
+        Text(titulo, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        Text(conteudo, textAlign: TextAlign.center),
+      ],
+    );
   }
 
   @override
@@ -100,15 +109,16 @@ class _AnimalScreenState extends State<AnimalScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 10),
-
                 Align(
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      bool tudoConcluido = _clicados.every((e) => e) && _quizConcluido;
+                      Navigator.pop(context, tudoConcluido);
+                    },
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Row(
@@ -124,26 +134,16 @@ class _AnimalScreenState extends State<AnimalScreen> {
                               color: Colors.green,
                             ),
                             const SizedBox(height: 4),
-                            Text(
-                              'Aprendizado atual (${(_progresso * 100).toStringAsFixed(0)}%)',
-                              style: TextStyle(fontSize: 12),
-                            ),
+                            Text('Aprendizado atual (${(_progresso * 100).toStringAsFixed(0)}%)', style: const TextStyle(fontSize: 12)),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 16),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
-                Expanded(
-                  child: Image.asset(widget.animal.imagem, fit: BoxFit.contain),
-                ),
-
+                Expanded(child: Image.asset(widget.animal.imagem, fit: BoxFit.contain)),
                 const SizedBox(height: 10),
-
                 Stack(
                   alignment: Alignment.centerRight,
                   children: [
@@ -155,35 +155,28 @@ class _AnimalScreenState extends State<AnimalScreen> {
                             ? Colors.green[700]
                             : Colors.green[300],
                         fixedSize: const Size(200, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       ),
                       onPressed: _quizDisponivel && !_quizConcluido
                           ? () async {
                         final resultado = await Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (_) => QuizScreen(animal: widget.animal),
-                          ),
+                          MaterialPageRoute(builder: (_) => QuizScreen(animal: widget.animal)),
                         );
-
                         if (resultado == true) {
                           setState(() {
                             _quizConcluido = true;
                             _progresso += 0.2;
                             if (_progresso > 1.0) _progresso = 1.0;
+                            _salvarProgresso();
                           });
                         }
                       }
-                      : null,
-
-
+                          : null,
                       child: Text(
                         _quizConcluido ? 'Quiz concluído' : 'Quiz',
                         style: const TextStyle(fontSize: 20),
                       ),
-
                     ),
                     if (!_quizDisponivel)
                       const Padding(
@@ -192,9 +185,7 @@ class _AnimalScreenState extends State<AnimalScreen> {
                       ),
                   ],
                 ),
-
                 const SizedBox(height: 10),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(4, (index) {
@@ -204,12 +195,10 @@ class _AnimalScreenState extends State<AnimalScreen> {
                     );
                   }),
                 ),
-
                 const SizedBox(height: 20),
               ],
             ),
           ),
-
           if (_botaoAberto != -1)
             Positioned.fill(
               child: Container(

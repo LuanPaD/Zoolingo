@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoolingo/main.dart';
 import 'package:zoolingo/screens/Animal.dart';
 import 'package:zoolingo/models/animal_info.dart';
+import 'package:zoolingo/screens/profile.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -12,7 +13,8 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  List<int> unlockedAnimals = [0]; // Inicializa com o primeiro animal desbloqueado
+  List<int> unlockedAnimals = [0];
+  String username = "";
 
   @override
   void initState() {
@@ -23,8 +25,11 @@ class _GameScreenState extends State<GameScreen> {
   Future<void> _loadProgress() async {
     final prefs = await SharedPreferences.getInstance();
     final savedList = prefs.getStringList('unlockedAnimals');
+    final savedName = prefs.getString('username') ?? "User Teste";
+
     setState(() {
       unlockedAnimals = savedList?.map(int.parse).toList() ?? [0];
+      username = savedName;
     });
   }
 
@@ -64,7 +69,7 @@ class _GameScreenState extends State<GameScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: AnimalPathScreen(
-        username: "User Teste",
+        username: username,
         unlockedAnimals: unlockedAnimals,
         animals: animals,
         onAnimalCompleted: handleAnimalCompleted,
@@ -198,6 +203,10 @@ class AnimalPathScreen extends StatelessWidget {
             print("Pagina de Descoberta clicada");
           } else if (index == 2) {
             print("Pagina de Perfil clicada");
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
           } else {
             Navigator.push(
               context,

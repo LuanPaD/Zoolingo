@@ -109,7 +109,7 @@ final List<AnimalInfo> animais = [
         '• Está listado como vulnerável à extinção no Brasil.\n'
         '• Sua imagem está estampada na nota de RS 200.',
 
-    habitatImage: 'lib/assets/images/habitat_LoboGuara.png',
+    habitatImage: 'lib/assets/images/habitat-Lobo-Guara.png',
 
     perguntas: [
       'Qual é o habitat preferido do lobo-guará?',

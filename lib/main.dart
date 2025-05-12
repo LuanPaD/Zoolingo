@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/game.dart';
+import 'screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter(); // sem getApplicationDocumentsDirectory
+  await Hive.initFlutter();
 
   await Hive.openBox('progresso_animais');
   runApp(const MyApp());
@@ -119,7 +119,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Align(
-              alignment: Alignment.centerLeft, // Alinha à esquerda
+              alignment: Alignment.centerLeft,
               child: const Text(
                 'Zoolingo',
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -179,6 +179,10 @@ class HomeScreen extends StatelessWidget {
             );
           } else if (index == 2) {
             print('Perfil clicado');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
           }
         },
         items: const [

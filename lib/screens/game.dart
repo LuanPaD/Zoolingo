@@ -47,7 +47,6 @@ class _GameScreenState extends State<GameScreen> {
         unlockedAnimals.add(index + 1);
       });
       _saveProgress();
-      print("Animal desbloqueado: ${index + 1}");
     }
   }
 
@@ -200,9 +199,7 @@ class AnimalPathScreen extends StatelessWidget {
         currentIndex: 1,
         onTap: (index) {
           if (index == 1) {
-            print("Pagina de Descoberta clicada");
           } else if (index == 2) {
-            print("Pagina de Perfil clicada");
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProfileScreen()),

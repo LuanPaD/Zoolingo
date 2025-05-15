@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AnimalInfo {
   final String nome;
   final String imagem;

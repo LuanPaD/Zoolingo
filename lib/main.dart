@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'screens/game.dart';
 import 'screens/profile.dart';
+import 'screens/credits.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,54 +33,23 @@ class HomeScreen extends StatelessWidget {
     print('Localização clicada');
   }
 
-  void _onUserTap() {
-    print('Perfil do usuário clicado');
-  }
-
-  void _onViewMap(BuildContext context) {
-    print('Ver mapa clicado');
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.network(
-              //Todo: Trocar por img local, colocar mapa do figma
-              'https://live.staticflickr.com/7192/6865549696_ab8b0f6e4b_h.jpg',
-                width: 400,
-                height: 300,
-                fit: BoxFit.cover,
-              ),
-              /*Todo: Imagem local
-              Image.asset(
-                'assets/images/map_image.jpg', // Caminho da imagem local dentro da pasta assets
-                width: 400,
-                height: 300,
-                fit: BoxFit.cover,
-              )
-              */
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Fechar'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
+  void _onCreditsTap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CreditsScreen()),
     );
   }
 
+  void _onViewMap(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const FullScreenMapScreen(),
+      ),
+    );
+  }
 
   void _onDiscover(BuildContext context) {
-    print('Descubra clicado');
-
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => GameScreen()),
@@ -108,10 +78,10 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: _onUserTap,
+                    onTap: () => _onCreditsTap(context),
                     child: const CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      child: Icon(Icons.pets, color: Colors.white),
+                      backgroundColor: Colors.blueAccent,
+                      child: Icon(Icons.info_outline, color: Colors.white),
                     ),
                   )
                 ],
@@ -130,13 +100,13 @@ class HomeScreen extends StatelessWidget {
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    //Todo: Trocar por img local, colocar imagem do figma
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeGiuqlyBPryppG-TtxwabwcH5sUlIkCakOw&s',
-                    width: 350,
-                    height: 350,
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                    Image.asset(
+                      'lib/assets/images/logozoobauru.jpg',
+                      width: 350,
+                      height: 350,
+                      fit: BoxFit.cover,
+                    ),
                 ),
               ),
             ),
@@ -194,3 +164,30 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+class FullScreenMapScreen extends StatelessWidget {
+  const FullScreenMapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mapa do Zoológico'),
+        backgroundColor: Colors.green,
+      ),
+      body: SizedBox.expand(
+        child: InteractiveViewer(
+          panEnabled: true,
+          boundaryMargin: const EdgeInsets.all(20),
+          minScale: 1,
+          maxScale: 4,
+          child: Image.asset(
+            'lib/assets/images/mapa.jpg',
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+    );
+  }
+}
+

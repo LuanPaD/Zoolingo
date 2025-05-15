@@ -1,4 +1,4 @@
-package com.example.zoolingo
+package br.edu.unisagrado.zoolingo
 
 import io.flutter.embedding.android.FlutterActivity
 

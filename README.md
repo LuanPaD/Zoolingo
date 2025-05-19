@@ -1,16 +1,29 @@
-# zoolingo
+# 🐾 Zoolingo
 
-A new Flutter project.
+**Zoolingo** é um aplicativo educacional infantil desenvolvido com Flutter, voltado para o zoologico de Bauru para ensino interativo de crianças. O app conta com animações Lottie, armazenamento local e uma interface lúdica e intuitiva.
 
-## Getting Started
+## 📱 Plataformas Suportadas
 
-This project is a starting point for a Flutter application.
+- ✅ Android
+- ✅ iOS
+- ✅ Web
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ Funcionalidades
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Animações com Lottie
+- Armazenamento local com Hive
+- Preferências salvas com Shared Preferences
+- Ícone personalizado para o aplicativo
+- Interface adaptada com Material Design
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Dependências Principais
+
+| Pacote               | Versão    | Descrição                                    |
+|----------------------|-----------|----------------------------------------------|
+| `flutter`            | SDK       | Framework principal                          |
+| `lottie`             | ^2.7.0    | Animações em vetor                           |
+| `hive` / `hive_flutter` | ^2.2.3 / ^1.1.0 | Armazenamento local rápido e leve   |
+| `path_provider`      | ^2.0.15   | Acesso a diretórios locais                   |
+| `shared_preferences` | ^2.2.2    | Armazenamento simples de preferências        |
+| `flutter_launcher_icons` | ^0.14.3 | Geração de ícones personalizados           |
+| `flutter_lints`      | ^5.0.0    | Boas práticas de código                      |

@@ -5,10 +5,10 @@ class CreditsScreen extends StatelessWidget {
 
   final List<String> integrantes = const [
     'Luan Padilha Miranda',
-    'Kaua',
-    'Bryan',
-    'Felipe',
-    'Eduardo',
+    'Kaua Limao Nunes',
+    'Bryan Joab Messias de Souza'
+    'Felipe Gabriel Tagliabues',
+    'Eduardo Marques Correa',
   ];
 
   @override
@@ -17,6 +17,7 @@ class CreditsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Créditos'),
         backgroundColor: Colors.green.shade900,
+        foregroundColor: Colors.white,
         centerTitle: true,
         elevation: 6,
         shadowColor: Colors.black54,
@@ -58,19 +59,6 @@ class CreditsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 36),
 
-                _sectionTitle('Professores Colaboradores'),
-                const Text(
-                  '(Nenhum informado)',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.grey,
-                    fontFamily: 'Roboto',
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 36),
-
                 _sectionTitle('Integrantes e Colaboradores do Grupo'),
                 Card(
                   elevation: 8,
@@ -105,23 +93,26 @@ class CreditsScreen extends StatelessWidget {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       _logoSection(
                         title: 'Desenvolvimento:',
                         imageAsset: 'lib/assets/images/Ciencia_da_Computacao.jpg',
-                        size: 130,
+                        width: 350,
+                        height: 150,
                       ),
+                      const SizedBox(height: 24),
                       _logoSection(
                         title: 'Apoio:',
                         imageAsset: 'lib/assets/images/coordenadoria-de-extensao.jpg',
-                        size: 130,
+                        width: 300,
+                        height: 130,
                       ),
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -157,7 +148,8 @@ class CreditsScreen extends StatelessWidget {
   Widget _logoSection({
     required String title,
     required String imageAsset,
-    double size = 130,
+    double width = 250,
+    double height = 130,
   }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -174,8 +166,8 @@ class CreditsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Container(
-          width: size,
-          height: size,
+          width: width,
+          height: height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
@@ -195,5 +187,6 @@ class CreditsScreen extends StatelessWidget {
       ],
     );
   }
+
 
 }

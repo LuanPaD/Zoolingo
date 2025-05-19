@@ -470,7 +470,7 @@ final List<AnimalInfo> animais = [
         '• Reproduz-se apenas uma vez por ano e normalmente choca dois ovos.\n'
         '• Seu voo é poderoso, com grandes batidas de asas.',
 
-    habitatImage: 'lib/assets/images/araraAzul.png',
+    habitatImage: 'lib/assets/images/habitat-araraAzul.png',
 
     perguntas: [
       'Qual é a principal característica visual da arara-azul?',
@@ -530,7 +530,7 @@ final List<AnimalInfo> animais = [
         '• Costuma retornar aos mesmos poleiros por gerações.\n'
         '• É monitorado por programas de conservação e reintrodução na natureza.',
 
-    habitatImage: 'lib/assets/images/papagaio.png',
+    habitatImage: 'lib/assets/images/habitat-papagaio.png',
 
     perguntas: [
       'Qual é a principal característica do papagaio-de-peito-roxo?',
@@ -591,7 +591,7 @@ final List<AnimalInfo> animais = [
         '• Sua alimentação inclui pedras que ajudam na digestão, pois ele não tem dentes.\n'
         '• O avestruz tem uma capacidade limitada de voar, mas suas asas são utilizadas em exibições e para equilibrar-se enquanto corre.',
 
-    habitatImage: 'lib/assets/images/avestruz.png',
+    habitatImage: 'lib/assets/images/habitat-avestruz.png',
 
     perguntas: [
       'Qual é a principal característica física do avestruz?',

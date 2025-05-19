@@ -6,7 +6,7 @@ class CreditsScreen extends StatelessWidget {
   final List<String> integrantes = const [
     'Luan Padilha Miranda',
     'Kaua Limao Nunes',
-    'Bryan Joab Messias de Souza'
+    'Bryan Joab Messias de Souza',
     'Felipe Gabriel Tagliabues',
     'Eduardo Marques Correa',
   ];
@@ -100,15 +100,15 @@ class CreditsScreen extends StatelessWidget {
                       _logoSection(
                         title: 'Desenvolvimento:',
                         imageAsset: 'lib/assets/images/Ciencia_da_Computacao.jpg',
-                        width: 350,
-                        height: 150,
+                        width: 380,
+                        height: 180,
                       ),
                       const SizedBox(height: 24),
                       _logoSection(
                         title: 'Apoio:',
                         imageAsset: 'lib/assets/images/coordenadoria-de-extensao.jpg',
-                        width: 300,
-                        height: 130,
+                        width: 380,
+                        height: 180,
                       ),
                     ],
                   ),

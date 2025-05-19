@@ -25,7 +25,7 @@ class _GameScreenState extends State<GameScreen> {
   Future<void> _loadProgress() async {
     final prefs = await SharedPreferences.getInstance();
     final savedList = prefs.getStringList('unlockedAnimals');
-    final savedName = prefs.getString('username') ?? "User Teste";
+    final savedName = prefs.getString('username') ?? "";
 
     setState(() {
       unlockedAnimals = savedList?.map(int.parse).toList() ?? [0];

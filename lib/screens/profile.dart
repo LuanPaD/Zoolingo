@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String username = "User Teste";
+  String username = "";
   bool isEditing = false;
   final TextEditingController _controller = TextEditingController();
   double progress = 0.0;
@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
-    final name = prefs.getString('username') ?? "User Teste";
+    final name = prefs.getString('username') ?? "Insira seu nome";
     final unlocked = prefs.getStringList('unlockedAnimals')?.length ?? 1;
     setState(() {
       username = name;
@@ -66,6 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text('Perfil'),
         backgroundColor: Colors.green[400],
+        foregroundColor: Colors.white,
       ),
       body: SafeArea(
         child: Padding(

@@ -65,16 +65,14 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: AnimalPathScreen(
-        username: username,
-        unlockedAnimals: unlockedAnimals,
-        animals: animals,
-        onAnimalCompleted: handleAnimalCompleted,
-      ),
+    return AnimalPathScreen(
+      username: username,
+      unlockedAnimals: unlockedAnimals,
+      animals: animals,
+      onAnimalCompleted: handleAnimalCompleted,
     );
   }
+
 }
 
 class AnimalPathScreen extends StatelessWidget {

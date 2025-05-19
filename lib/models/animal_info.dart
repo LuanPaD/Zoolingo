@@ -168,7 +168,7 @@ final List<AnimalInfo> animais = [
         '• É símbolo de força e poder para muitas culturas indígenas.\n'
         '• Cada onça tem um padrão único de manchas, como impressões digitais.',
 
-    habitatImage: 'lib/assets/images/oncaPintada.png',
+    habitatImage: 'lib/assets/images/habitat - oncaPintada.png',
 
     perguntas: [
       'Qual é o habitat preferido da onça-pintada?',
@@ -228,7 +228,7 @@ final List<AnimalInfo> animais = [
         '• A comunicação entre macacos pode incluir mais de 30 sons distintos.\n'
         '• Algumas espécies são protegidas por leis ambientais devido ao risco de extinção.',
 
-    habitatImage: 'lib/assets/images/macaco.png',
+    habitatImage: 'lib/assets/images/habitat-macaco.png',
 
     perguntas: [
       'Onde vivem, principalmente, os macacos?',
@@ -288,7 +288,7 @@ final List<AnimalInfo> animais = [
         '• Fêmeas botam ovos e muitas os incubam enrolando-se ao redor deles.\n'
         '• Seus dentes curvos ajudam a segurar a presa e impedir sua fuga.',
 
-    habitatImage:  'lib/assets/images/piton.png',
+    habitatImage:  'lib/assets/images/habitat-piton.png',
 
     perguntas: [
       'Qual é a principal forma de caça da píton?',
@@ -348,7 +348,7 @@ final List<AnimalInfo> animais = [
         '• Podem ficar longos períodos sem comida, graças ao metabolismo lento.\n'
         '• Têm visão e olfato bem desenvolvidos.',
 
-    habitatImage: 'lib/assets/images/tartaruga.png',
+    habitatImage: 'lib/assets/images/habitat-tartaruga.png',
 
     perguntas: [
       'Qual é a principal característica física das tartarugas?',
@@ -409,7 +409,7 @@ final List<AnimalInfo> animais = [
         '• É um importante indicador da saúde dos ecossistemas aquáticos.\n'
         '• Possui excelente visão noturna.',
 
-    habitatImage: 'lib/assets/images/jacare.png',
+    habitatImage: 'lib/assets/images/habitat-jacare.png',
 
     perguntas: [
       'Por que o jacaré-de-papo-amarelo tem esse nome?',

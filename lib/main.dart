@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Align(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child: const Text(
                 'Zoolingo',
                 style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   child:
                     Image.asset(
-                      'lib/assets/images/logozoobauru.jpg',
+                      'lib/assets/images/logozoobauru.png',
                       width: 350,
                       height: 350,
                       fit: BoxFit.cover,
